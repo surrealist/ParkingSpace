@@ -49,7 +49,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App.cs" />
     <Compile Include="BarrierService.cs" />
+    <Compile Include="Core\IService.cs" />
+    <Compile Include="Core\IService_T.cs" />
+    <Compile Include="Core\RootClass.cs" />
+    <Compile Include="Core\ServiceBase_T.cs" />
     <Compile Include="Core\SystemTime.cs" />
     <Compile Include="ParkingTicketService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
