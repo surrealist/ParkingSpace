@@ -14,12 +14,14 @@ namespace ParkingSpace.Facts.Controllers {
 
       [Fact]
       public void ShouldReturnsView() {
-        var ctrl = new GateInController();
+        using (var app = new App(testing: true)) {
+          var ctrl = new GateInController(null, app);
 
-        var r = ctrl.Index();
+          var r = ctrl.Index();
 
-        Assert.NotNull(r);
-        Assert.IsType<ViewResult>(r);
+          Assert.NotNull(r);
+          Assert.IsType<ViewResult>(r);
+        }
       }
     }
 
