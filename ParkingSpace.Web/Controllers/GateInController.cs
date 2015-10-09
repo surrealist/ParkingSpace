@@ -26,6 +26,7 @@ namespace ParkingSpace.Web.Controllers {
 
     [Route]
     public ActionResult Index() {
+      ViewBag.GateId = app.Settings.Current.GateId.ToString("00");
       return View();
     }
 

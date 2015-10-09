@@ -5,6 +5,7 @@ namespace ParkingSpace.DataAccess.Context {
   public class ParkingSpaceDb : DbContext {
 
     public DbSet<ParkingTicket> ParkingTickets { get; set; }
+    public DbSet<Setting> Settings { get; set; }
 
   }
 }
