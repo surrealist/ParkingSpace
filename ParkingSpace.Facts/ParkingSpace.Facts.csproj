@@ -100,6 +100,7 @@
     <Compile Include="Models\ParkingTicketFacts.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ParkingTicketServiceFacts.cs" />
+    <Compile Include="Services\SettingServiceFacts.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ParkingSpace.Models\ParkingSpace.Models.csproj">

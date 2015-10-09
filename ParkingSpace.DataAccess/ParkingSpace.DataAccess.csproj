@@ -54,8 +54,18 @@
     <Compile Include="Core\IRepository.cs" />
     <Compile Include="Core\IRepository_T.cs" />
     <Compile Include="Core\RepositoryBase_T.cs" />
+    <Compile Include="Migrations\201510090646303_InitialCreate.cs" />
+    <Compile Include="Migrations\201510090646303_InitialCreate.Designer.cs">
+      <DependentUpon>201510090646303_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201510090920101_add settings.cs" />
+    <Compile Include="Migrations\201510090920101_add settings.Designer.cs">
+      <DependentUpon>201510090920101_add settings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="ParkingTicketRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SettingRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ParkingSpace.Models\ParkingSpace.Models.csproj">
@@ -67,7 +77,14 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201510090646303_InitialCreate.resx">
+      <DependentUpon>201510090646303_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201510090920101_add settings.resx">
+      <DependentUpon>201510090920101_add settings.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
