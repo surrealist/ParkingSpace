@@ -5,6 +5,9 @@
 # Test result file
 Result.html
 
+App_Data/
+Rotativa/
+
 # Visual Studio Code
 
 
