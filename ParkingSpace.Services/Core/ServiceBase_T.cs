@@ -4,8 +4,8 @@ using System.Linq;
 using System.Data.Entity;
 
 namespace GFX.Core {
-  public abstract class ServiceBase<T> : IService<T> 
-    where T : class {
+  public abstract class ServiceBase<T> : IService<T>
+     where T : class, new() {
     
 
     public ServiceBase(RootClass root, DbContext context, IRepository<T> repo) {

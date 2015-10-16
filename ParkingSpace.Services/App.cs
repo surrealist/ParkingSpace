@@ -20,7 +20,7 @@ namespace ParkingSpace.Services {
     }
 
     protected override DbContext NewDbContext() {
-      return new ParkingSpaceDb();
+      return container.Resolve<DbContext>(); // new ParkingSpaceDb();
     }
 
     protected override void RegisterServices(ContainerBuilder builder) {
@@ -49,8 +49,26 @@ namespace ParkingSpace.Services {
     }
 
     protected override void RegisterServicesForUnitTests(ContainerBuilder builder ) {
-      //this.AddService<ParkingTicket, ParkingTicketService, FakeRepository<ParkingTicket>>(builder);
-      //this.AddService<Setting, SettingService, FakeRepository<Setting>>(builder);
+
+      builder.RegisterType<App>().As<RootClass>();
+      builder.RegisterType<ParkingSpaceDb>().As<DbContext>();
+
+      builder.RegisterType<FakeRepository<ParkingTicket>>() 
+             .As<IRepository<ParkingTicket>>();
+
+      builder.RegisterType<FakeRepository<Setting>>() 
+             .As<IRepository<Setting>>();
+
+      // services
+      builder.RegisterType<ParkingTicketService>()
+             .As<ServiceBase<ParkingTicket>>()
+             .As<IService<ParkingTicket>>()
+             .AsSelf();
+
+      builder.RegisterType<SettingService>()
+             .As<ServiceBase<Setting>>()
+             .As<IService<Setting>>()
+             .AsSelf();
     }
 
     public ParkingTicketService ParkingTickets {

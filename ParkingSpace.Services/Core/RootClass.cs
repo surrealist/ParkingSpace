@@ -16,7 +16,6 @@ namespace GFX.Core {
     protected readonly IContainer container;
 
     public RootClass(bool testing = false) {
-      Context = this.NewDbContext(); 
       IsTesting = testing;
 
       var builder = new ContainerBuilder();
@@ -29,6 +28,7 @@ namespace GFX.Core {
       }
 
       container = builder.Build();
+      Context = this.NewDbContext(); 
     }
 
     public virtual void Dispose() {
