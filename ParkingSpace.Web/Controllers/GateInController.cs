@@ -14,10 +14,10 @@ namespace ParkingSpace.Web.Controllers {
     private App app;
     private IParkingTicketPrinter printer;
 
-    public GateInController() {
-      printer = new PdfParkingTicketPrinter();
-      app = new App();
-    }
+    //public GateInController() {
+    //  printer = new PdfParkingTicketPrinter();
+    //  app = new App();
+    //}
 
     public GateInController(IParkingTicketPrinter printer, App app) {
       this.printer = printer;

@@ -11,6 +11,10 @@ namespace ParkingSpace.Services {
 
     public bool TestingMode { get; private set; }
 
+    //public App() : this(false) {
+    //  //
+    //}
+
     public App(bool testing = false)
       : base(testing) {
 
