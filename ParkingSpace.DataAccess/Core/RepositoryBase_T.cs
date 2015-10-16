@@ -8,6 +8,10 @@ namespace GFX.Core {
 
     public DbContext Context { get; set; }
 
+    public RepositoryBase(DbContext context) {
+      this.Context = context;
+    }
+
     public IQueryable<T> Query(Func<T, bool> predicate) {
       return Context.Set<T>().Where(predicate).AsQueryable<T>();
     }

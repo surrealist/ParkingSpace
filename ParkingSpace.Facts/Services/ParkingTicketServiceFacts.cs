@@ -16,9 +16,11 @@ namespace ParkingSpace.Facts.Services {
 
       [Fact]
       public void HasDefaultValues() {
-        var s = new ParkingTicketService();
-        Assert.Equal(0, s.GateId);
-        // Assert.Equal(1, s.NextId);
+        using (var app = new App(testing: true)) {
+          var s = app.ParkingTickets; // new ParkingTicketService();
+          Assert.Equal(0, s.GateId);
+          // Assert.Equal(1, s.NextId);
+        }
       }
 
     }

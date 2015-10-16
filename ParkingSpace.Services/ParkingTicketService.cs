@@ -8,10 +8,9 @@ using System;
 using System.Collections.Generic;
 
 namespace ParkingSpace.Services {
-  public class ParkingTicketService : ServiceBase<App, ParkingTicket> {
+  public class ParkingTicketService : ServiceBase<ParkingTicket> {
 
     public int GateId { get; set; }
-    //  public int NextId { get; set; }
 
     public override IRepository<ParkingTicket> Repository {
       get; set;
@@ -27,9 +26,9 @@ namespace ParkingSpace.Services {
       }
     }
 
-    public ParkingTicketService() {
+    public ParkingTicketService(RootClass root, DbContext context, IRepository<ParkingTicket> repo)
+        : base(root, context, repo) {
       GateId = 0;
-      // NextId = 1;
     }
 
     public ParkingTicket CreateParkingTicket(string plateNo) {
@@ -39,16 +38,16 @@ namespace ParkingSpace.Services {
       ticket.DateIn = SystemTime.Now();
       ticket.Id = generateId();
       ticket.GateId = GateId;
-
-      App.ParkingTickets.Add(ticket);
-      App.ParkingTickets.SaveChanges();
+      
+      ((App)App).ParkingTickets.Add(ticket);
+      ((App)App).ParkingTickets.SaveChanges();
 
       return ticket;
     }
 
     private string generateId() {
       var NextId = 1;
-      var maxId = App.ParkingTickets.All().Max(t => t.Id);
+      var maxId = ((App)App).ParkingTickets.All().Max(t => t.Id);
 
       if (maxId != null) {
         NextId = int.Parse(maxId.Substring(maxId.Length - 5)) + 1;

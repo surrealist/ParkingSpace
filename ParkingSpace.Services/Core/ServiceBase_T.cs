@@ -4,23 +4,20 @@ using System.Linq;
 using System.Data.Entity;
 
 namespace GFX.Core {
-  public abstract class ServiceBase<TRootClass, T> : IService<T>
-    where TRootClass : RootClass
+  public abstract class ServiceBase<T> : IService<T> 
     where T : class {
+    
 
-    public ServiceBase()
-      : this(null) {
-      //
-    }
-
-    public ServiceBase(RootClass root) {
+    public ServiceBase(RootClass root, DbContext context, IRepository<T> repo) {
       Root = root;
+      Context = context;
+      Repository = repo;
     }
 
     public RootClass Root { get; set; }
     public DbContext Context { get; set; }
 
-    public TRootClass App { get { return Root as TRootClass; } }
+    public RootClass App { get { return Root; } }
 
     public abstract IRepository<T> Repository { get; set; }
 

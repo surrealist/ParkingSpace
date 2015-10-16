@@ -5,15 +5,13 @@ using System.Data.Entity;
 using ParkingSpace.DataAccess.Context;
 using ParkingSpace.DataAccess;
 using ParkingSpace.Models;
+using Autofac;
 
 namespace ParkingSpace.Services {
   public class App : RootClass {
 
     public bool TestingMode { get; private set; }
 
-    //public App() : this(false) {
-    //  //
-    //}
 
     public App(bool testing = false)
       : base(testing) {
@@ -25,25 +23,45 @@ namespace ParkingSpace.Services {
       return new ParkingSpaceDb();
     }
 
-    protected override void RegisterServices() {
-      this.AddService<ParkingTicket, ParkingTicketService, ParkingTicketRepository>();
-      this.AddService<Setting, SettingService, SettingRepository>();
+    protected override void RegisterServices(ContainerBuilder builder) {
+
+      builder.RegisterType<App>().As<RootClass>();
+      builder.RegisterType<ParkingSpaceDb>().As<DbContext>();
+
+      builder.RegisterType<ParkingTicketRepository>()
+             .As<RepositoryBase<ParkingTicket>>()
+             .As<IRepository<ParkingTicket>>();
+
+      builder.RegisterType<SettingRepository>()
+             .As<RepositoryBase<Setting>>()
+             .As<IRepository<Setting>>();
+
+      // services
+      builder.RegisterType<ParkingTicketService>()
+             .As<ServiceBase<ParkingTicket>>()
+             .As<IService<ParkingTicket>>()
+             .AsSelf();
+
+      builder.RegisterType<SettingService>()
+             .As<ServiceBase<Setting>>()
+             .As<IService<Setting>>()
+             .AsSelf();
     }
 
-    protected override void RegisterServicesForUnitTests() {
-      this.AddService<ParkingTicket, ParkingTicketService, FakeRepository<ParkingTicket>>();
-      this.AddService<Setting, SettingService, FakeRepository<Setting>>();
+    protected override void RegisterServicesForUnitTests(ContainerBuilder builder ) {
+      //this.AddService<ParkingTicket, ParkingTicketService, FakeRepository<ParkingTicket>>(builder);
+      //this.AddService<Setting, SettingService, FakeRepository<Setting>>(builder);
     }
 
     public ParkingTicketService ParkingTickets {
       get {
-        return this.Services<ParkingTicket, ParkingTicketService>();
+        return container.Resolve<ParkingTicketService>(); 
       }
     }
 
     public SettingService Settings {
       get {
-        return this.Services<Setting, SettingService>();
+        return container.Resolve<SettingService>();
       }
     }
 

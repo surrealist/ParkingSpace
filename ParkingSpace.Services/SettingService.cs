@@ -2,14 +2,21 @@
 using ParkingSpace.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace ParkingSpace.Services {
-  public class SettingService : ServiceBase<App, Setting> {
+  public class SettingService : ServiceBase<Setting> {
     public override IRepository<Setting> Repository {
       get; set;
+    }
+
+    public SettingService(RootClass root, 
+        DbContext context, 
+        IRepository<Setting> repo)
+        : base(root, context, repo) { 
     }
 
     public override Setting Find(params object[] keys) {
