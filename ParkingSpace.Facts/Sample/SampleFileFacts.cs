@@ -17,15 +17,15 @@ namespace ParkingSpace.Facts.Sample {
       }
     }
     
-    [Trait("Category", "Sample")]
-    [Theory]
-    [MemberData("getFilesFromCurrentFolder")]
-    //[InlineData("sample1.txt")]
-    //[InlineData("sample20.exe")]
-    public void FileNameMustHasThreeCharactersExtension(string fileName) {
-      var length = Path.GetExtension(fileName).Length;
+    //[Trait("Category", "Sample")]
+    //[Theory]
+    //[MemberData("getFilesFromCurrentFolder")]
+    ////[InlineData("sample1.txt")]
+    ////[InlineData("sample20.exe")]
+    //public void FileNameMustHasThreeCharactersExtension(string fileName) {
+    //  var length = Path.GetExtension(fileName).Length;
 
-      Assert.Equal(4, length); // include 'dot' in front of the extension (.dll, .exe)
-    }
+    //  Assert.Equal(4, length); // include 'dot' in front of the extension (.dll, .exe)
+    //}
   }
 }
