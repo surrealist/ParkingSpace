@@ -2,9 +2,12 @@
 using ParkingSpace.Services;
 using ParkingSpace.Services.Core;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 using Xunit.Abstractions;
+using Should;
 
 namespace ParkingSpace.Facts.Services {
   public class ParkingTicketServiceFacts {
@@ -31,7 +34,7 @@ namespace ParkingSpace.Facts.Services {
       [Fact]
       public void ReturnParkingTicket() {
         using (var app = new App(testing: true)) {
-          
+
           var t = app.ParkingTickets.CreateParkingTicket("1122");
 
           Assert.NotNull(t);
@@ -59,23 +62,23 @@ namespace ParkingSpace.Facts.Services {
       public void NewTicket_HasAutoRunningId() {
         using (var app = new App(testing: true)) {
           var s = app.ParkingTickets;
-           
+
           var ticket1 = s.CreateParkingTicket("23");
           var ticketId1 = string.Format("00-{0:00000}", 1);
 
           displayTicket(ticket1);
 
           Assert.Equal(ticketId1, ticket1.Id);
-           
+
           var ticket2 = s.CreateParkingTicket("555");
           var ticketId2 = string.Format("00-{0:00000}", 2);
 
           displayTicket(ticket2);
-           
+
           Assert.Equal(ticketId2, ticket2.Id);
         }
       }
-       
+
       [Fact]
       public void NewTicket_UsesGateIdFromService() {
         using (var app = new App(testing: true)) {
@@ -87,18 +90,18 @@ namespace ParkingSpace.Facts.Services {
         }
       }
 
-      private void displayTicket(ParkingTicket  t) {
+      private void displayTicket(ParkingTicket t) {
         output.WriteLine("TICKET:");
         output.WriteLine($"  Id:      {t.Id}");
         output.WriteLine($"  Gate:    {t.GateId}");
         output.WriteLine($"  Plate:   {t.PlateNumber}");
-        output.WriteLine($"  Date In: {t.DateIn:s}"); 
+        output.WriteLine($"  Date In: {t.DateIn:s}");
       }
 
-       
+
       [Fact]
       public void NewTicket_HasInsertedToDatabase() {
-        using(var app = new App(testing: true)) {
+        using (var app = new App(testing: true)) {
 
           var t = app.ParkingTickets.CreateParkingTicket("112233");
 
@@ -111,5 +114,41 @@ namespace ParkingSpace.Facts.Services {
       }
     }
 
+    public class CheckoutMethod {
+
+      [Fact]
+      public void ShouldStampDateOutToTicket() {
+        using (var app = new App(testing: true)) {
+          var t1 = app.ParkingTickets.CreateParkingTicket("113");
+          var dt = DateTime.Now;
+          SystemTime.SetNow(dt);
+
+          app.ParkingTickets.Checkout(t1);
+
+          Assert.NotNull(t1.DateOut);
+          t1.DateOut.ShouldEqual(dt);
+        }
+      }
+    }
+
+    public class GetActiveTicketsProperty {
+
+      [Fact]
+      public void ShouldReturnOnlyActiveTickets() {
+        using (var app = new App(testing: true)) {
+          var t1 = app.ParkingTickets.CreateParkingTicket("111");
+          var t2 = app.ParkingTickets.CreateParkingTicket("112");
+          var t3 = app.ParkingTickets.CreateParkingTicket("113");
+          app.ParkingTickets.Checkout(t2);
+
+          IEnumerable<ParkingTicket> tickets = app.ParkingTickets.ActiveTickets;
+
+          tickets.Count().ShouldEqual(2);
+          tickets.ShouldNotContain(t2);
+          tickets.ShouldContain(t1);
+          tickets.ShouldContain(t3);
+        }
+      }
+    }
   }
 }
