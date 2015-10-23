@@ -7,6 +7,5 @@ using System.Text;
 namespace GFX.Core {
   public interface IService {
     RootClass Root { get; set; }
-    DbContext Context { get; set; }
   }
 }

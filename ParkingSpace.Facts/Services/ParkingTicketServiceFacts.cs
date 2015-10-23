@@ -14,12 +14,12 @@ namespace ParkingSpace.Facts.Services {
 
     public class GeneralUsage {
 
-      [Fact]
+      [Fact] 
       public void HasDefaultValues() {
-        using (var app = new App(testing: true)) {
-          var s = app.ParkingTickets; // new ParkingTicketService();
-          Assert.Equal(0, s.GateId);
-          // Assert.Equal(1, s.NextId);
+        using (var app = new App(testing: true)) { 
+
+          var s = app.ParkingTickets; 
+          Assert.Equal(0, s.GateId); 
         }
       }
 
@@ -65,19 +65,12 @@ namespace ParkingSpace.Facts.Services {
         using (var app = new App(testing: true)) {
           var s = app.ParkingTickets;
 
-          var ticket1 = s.CreateParkingTicket("23");
-          var ticketId1 = string.Format("00-{0:00000}", 1);
-
-          displayTicket(ticket1);
-
-          Assert.Equal(ticketId1, ticket1.Id);
-
-          var ticket2 = s.CreateParkingTicket("555");
-          var ticketId2 = string.Format("00-{0:00000}", 2);
-
+          var ticket1 = s.CreateParkingTicket("23"); 
+          var ticket2 = s.CreateParkingTicket("555"); 
+          displayTicket(ticket1); 
           displayTicket(ticket2);
 
-          Assert.Equal(ticketId2, ticket2.Id);
+          Assert.NotEqual(ticket2.Id, ticket1.Id);
         }
       }
 
@@ -101,16 +94,17 @@ namespace ParkingSpace.Facts.Services {
       }
 
 
-      [Fact]
-      public void NewTicket_HasInsertedToDatabase() {
-        using (var app = new App(testing: true)) {
+      [Fact] 
+      public void NewTicket_HasInsertedToDatabase() { 
+        using (var app = new App(testing: true)) { 
+          var s = app.ParkingTickets; 
+          var t = s.CreateParkingTicket("112233"); 
 
-          var t = app.ParkingTickets.CreateParkingTicket("112233");
+          var count = s.All().Count(); 
 
-          var count = app.ParkingTickets.All().Count();
           Assert.Equal(1, count);
 
-          var firstTicket = app.ParkingTickets.All().FirstOrDefault();
+          var firstTicket = s.All().FirstOrDefault();
           Assert.Equal("112233", firstTicket.PlateNumber);
         }
       }

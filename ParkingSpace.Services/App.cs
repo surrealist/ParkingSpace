@@ -12,7 +12,6 @@ namespace ParkingSpace.Services {
 
     public bool TestingMode { get; private set; }
 
-
     public App(bool testing = false)
       : base(testing) {
 
@@ -20,68 +19,71 @@ namespace ParkingSpace.Services {
     }
 
     protected override DbContext NewDbContext() {
-      return container.Resolve<DbContext>(); // new ParkingSpaceDb();
+      return container.Resolve<DbContext>();
     }
 
     protected override void RegisterServices(ContainerBuilder builder) {
 
-      builder.RegisterType<App>().As<RootClass>();
-      builder.RegisterType<ParkingSpaceDb>().As<DbContext>();
+      builder.RegisterType<App>().As<RootClass>().SingleInstance();
+      builder.RegisterType<ParkingSpaceDb>().As<DbContext>().SingleInstance();
 
       builder.RegisterType<ParkingTicketRepository>()
-             .As<RepositoryBase<ParkingTicket>>()
-             .As<IRepository<ParkingTicket>>();
+             .As<IRepository<ParkingTicket>>().SingleInstance();
 
       builder.RegisterType<SettingRepository>()
-             .As<RepositoryBase<Setting>>()
-             .As<IRepository<Setting>>();
+             .As<IRepository<Setting>>().SingleInstance();
 
       // services
       builder.RegisterType<ParkingTicketService>()
-             .As<ServiceBase<ParkingTicket>>()
              .As<IService<ParkingTicket>>()
-             .AsSelf();
+             .AsSelf().SingleInstance();
 
       builder.RegisterType<SettingService>()
-             .As<ServiceBase<Setting>>()
              .As<IService<Setting>>()
-             .AsSelf();
+             .AsSelf().SingleInstance();
     }
 
-    protected override void RegisterServicesForUnitTests(ContainerBuilder builder ) {
+    protected override void RegisterServicesForUnitTests(ContainerBuilder builder) {
 
-      builder.RegisterType<App>().As<RootClass>();
-      builder.RegisterType<ParkingSpaceDb>().As<DbContext>();
+      builder.RegisterType<App>().As<RootClass>().SingleInstance();
+      builder.RegisterType<ParkingSpaceDb>().As<DbContext>().SingleInstance();
 
-      builder.RegisterType<FakeRepository<ParkingTicket>>() 
-             .As<IRepository<ParkingTicket>>();
+      builder.RegisterType<FakeRepository<ParkingTicket>>()
+             .As<IRepository<ParkingTicket>>()
+             .SingleInstance();
 
-      builder.RegisterType<FakeRepository<Setting>>() 
-             .As<IRepository<Setting>>();
+      builder.RegisterType<FakeRepository<Setting>>()
+             .As<IRepository<Setting>>()
+             .SingleInstance();
 
       // services
       builder.RegisterType<ParkingTicketService>()
-             .As<ServiceBase<ParkingTicket>>()
              .As<IService<ParkingTicket>>()
-             .AsSelf();
+             .AsSelf()
+             .SingleInstance();
 
       builder.RegisterType<SettingService>()
-             .As<ServiceBase<Setting>>()
              .As<IService<Setting>>()
-             .AsSelf();
+             .AsSelf()
+             .SingleInstance();
     }
 
     public ParkingTicketService ParkingTickets {
       get {
-        return container.Resolve<ParkingTicketService>(); 
+        return service<ParkingTicketService>();
       }
     }
 
     public SettingService Settings {
       get {
-        return container.Resolve<SettingService>();
+        return service<SettingService>();
       }
     }
-
+    
+    private T service<T>() where T : IService {
+      var s = container.Resolve<T>();
+      s.Root = this;
+      return s;
+    }
   }
 }

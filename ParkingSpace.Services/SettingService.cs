@@ -13,10 +13,8 @@ namespace ParkingSpace.Services {
       get; set;
     }
 
-    public SettingService(RootClass root, 
-        DbContext context, 
-        IRepository<Setting> repo)
-        : base(root, context, repo) { 
+    public SettingService(IRepository<Setting> repo)
+        : base(repo) {
     }
 
     public override Setting Find(params object[] keys) {

@@ -6,16 +6,13 @@ using System.Data.Entity;
 namespace GFX.Core {
   public abstract class ServiceBase<T> : IService<T>
      where T : class, new() {
-    
 
-    public ServiceBase(RootClass root, DbContext context, IRepository<T> repo) {
-      Root = root;
-      Context = context;
+
+    public ServiceBase(IRepository<T> repo) {
       Repository = repo;
     }
 
     public RootClass Root { get; set; }
-    public DbContext Context { get; set; }
 
     public RootClass App { get { return Root; } }
 
@@ -52,13 +49,13 @@ namespace GFX.Core {
       get { return false; }
     }
 
-    public virtual void SetModified(T item) {
-      this.Context.Entry(item).State = EntityState.Modified;
-    }
+    //public virtual void SetModified(T item) {
+    //  //this.Context.Entry(item).State = EntityState.Modified;
+    //}
 
-    public virtual void SetAdded(T item) {
-      this.Context.Entry(item).State = EntityState.Added;
-    }
+    //public virtual void SetAdded(T item) {
+    //  //this.Context.Entry(item).State = EntityState.Added;
+    //}
 
   }
 }

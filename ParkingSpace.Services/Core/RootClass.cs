@@ -28,16 +28,10 @@ namespace GFX.Core {
       }
 
       container = builder.Build();
-      Context = this.NewDbContext(); 
     }
 
     public virtual void Dispose() {
-      //foreach (var item in ServiceContainer) {
-      //  if (item.Value != null && item.Value is IDisposable) {
-      //    ((IDisposable)(item.Value)).Dispose();
-      //  }
-      //}
-      if (Context != null) Context.Dispose();
+      //
     }
 
 
@@ -45,54 +39,6 @@ namespace GFX.Core {
       if (Context == null) return -1;
       return Context.SaveChanges();
     }
-
-    //protected void AddService<TModel, TService, TRepository>(ContainerBuilder builder)
-      //where TModel : class
-      //where TService : class, IService<TModel>, new()
-      //where TRepository : class, IRepository<TModel>, new() {
-
-     
-      //Type key = typeof(TService);
-
-      //if (!ServiceContainer.ContainsKey(key)) {
-
-      //  Lazy<IService<TModel>> obj;
-      //  obj = new Lazy<IService<TModel>>(valueFactory: () => {
-      //    IService<TModel> x = new TService();
-      //    x.Root = this;
-
-      //    if (x.RequiresOwnDbContext) {
-      //      x.Context = this.NewDbContext();
-      //    }
-      //    else {
-      //      x.Context = this.Context; // shared
-      //    }
-
-      //    x.Repository = new TRepository();
-      //    x.Repository.Context = x.Context;
-      //    return x;
-      //  });
-
-      //  ServiceContainer.Add(key: key, value: obj);
-      //}
-    //}
-
-    //public TService Services<TModel, TService>()
-    //  where TModel : class
-    //  where TService : class, IService<TModel> {
-
-    //  //Type key = typeof(TService);
-
-    //  //if (ServiceContainer.ContainsKey(key)) {
-    //  //  var lazy = (Lazy<IService<TModel>>)ServiceContainer[key];
-    //  //  return lazy.Value as TService;
-    //  //}
-    //  //else {
-    //  //  var s = string.Format("Service '{0}' has not been registered to the App.",
-    //  //    typeof(TService).Name);
-    //  //  throw new Exception(s);
-    //  //}
-    //}
 
   } 
 }

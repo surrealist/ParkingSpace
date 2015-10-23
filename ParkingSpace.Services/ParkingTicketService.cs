@@ -11,7 +11,7 @@ namespace ParkingSpace.Services {
   public class ParkingTicketService : ServiceBase<ParkingTicket> {
 
     public int GateId { get; set; }
-
+     
     public override IRepository<ParkingTicket> Repository {
       get; set;
     }
@@ -26,9 +26,9 @@ namespace ParkingSpace.Services {
       }
     }
 
-    public ParkingTicketService(RootClass root, DbContext context, IRepository<ParkingTicket> repo)
-        : base(root, context, repo) {
-      GateId = 0;
+    public ParkingTicketService (IRepository<ParkingTicket> repo)
+        : base(repo) {
+      GateId = 0; 
     }
 
     public ParkingTicket CreateParkingTicket(string plateNo) {
