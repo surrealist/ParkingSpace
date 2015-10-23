@@ -13,16 +13,7 @@ namespace ParkingSpace.Facts.Services {
   public class ParkingTicketServiceFacts {
 
     public class GeneralUsage {
-
-      [Fact] 
-      public void HasDefaultValues() {
-        using (var app = new App(testing: true)) { 
-
-          var s = app.ParkingTickets; 
-          Assert.Equal(0, s.GateId); 
-        }
-      }
-
+ 
     }
 
     public class CreateParkingTicketMethod {
@@ -77,11 +68,11 @@ namespace ParkingSpace.Facts.Services {
       [Fact]
       public void NewTicket_UsesGateIdFromService() {
         using (var app = new App(testing: true)) {
-          var s = app.ParkingTickets;
+          var gateId = app.Settings.Current.GateId; 
 
-          var ticket = s.CreateParkingTicket("23");
+          var ticket = app.ParkingTickets.CreateParkingTicket("23");
 
-          Assert.Equal(s.GateId, ticket.GateId);
+          Assert.Equal(gateId, ticket.GateId);
         }
       }
 

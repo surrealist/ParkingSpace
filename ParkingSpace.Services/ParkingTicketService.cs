@@ -9,9 +9,13 @@ using System.Collections.Generic;
 
 namespace ParkingSpace.Services {
   public class ParkingTicketService : ServiceBase<ParkingTicket> {
-
-    public int GateId { get; set; }
      
+     
+    public ParkingTicketService (IRepository<ParkingTicket> repo)
+        : base(repo) {
+      //
+    }
+
     public override IRepository<ParkingTicket> Repository {
       get; set;
     }
@@ -26,34 +30,31 @@ namespace ParkingSpace.Services {
       }
     }
 
-    public ParkingTicketService (IRepository<ParkingTicket> repo)
-        : base(repo) {
-      GateId = 0; 
-    }
 
     public ParkingTicket CreateParkingTicket(string plateNo) {
       var ticket = new ParkingTicket();
+      int gateId = App.Settings.Current.GateId;
 
       ticket.PlateNumber = plateNo;
       ticket.DateIn = SystemTime.Now();
-      ticket.Id = generateId();
-      ticket.GateId = GateId;
+      ticket.Id = generateId(gateId);
+      ticket.GateId = gateId;  
       
-      ((App)App).ParkingTickets.Add(ticket);
-      ((App)App).ParkingTickets.SaveChanges();
+      App.ParkingTickets.Add(ticket);
+      App.ParkingTickets.SaveChanges();
 
       return ticket;
     }
 
-    private string generateId() {
+    private string generateId(int gateId) {
       var NextId = 1;
-      var maxId = ((App)App).ParkingTickets.All().Max(t => t.Id);
+      var maxId = App.ParkingTickets.Query(t => t.GateId == gateId).Max(t => t.Id);
 
       if (maxId != null) {
         NextId = int.Parse(maxId.Substring(maxId.Length - 5)) + 1;
       }
 
-      string s = $"{GateId:00}-{NextId:00000}";
+      string s = $"{gateId:00}-{NextId:00000}";
 
       return s;
     }

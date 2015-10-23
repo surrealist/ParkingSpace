@@ -2,6 +2,7 @@
 using System.Linq;
 
 using System.Data.Entity;
+using ParkingSpace.Services;
 
 namespace GFX.Core {
   public abstract class ServiceBase<T> : IService<T>
@@ -13,8 +14,7 @@ namespace GFX.Core {
     }
 
     public RootClass Root { get; set; }
-
-    public RootClass App { get { return Root; } }
+    public App App { get { return Root as App; } }
 
     public abstract IRepository<T> Repository { get; set; }
 
